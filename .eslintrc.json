@@ -1,0 +1,21 @@
+{
+  "parser": "babel-eslint",
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "printWidth": 99,
+        "parser": "flow"
+      }
+    ],
+    "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }]
+  },
+  "extends": ["plugin:react/recommended", "prettier"],
+  "root": true,
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}
