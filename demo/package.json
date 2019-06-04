@@ -16,7 +16,7 @@
     "redux": "^4.0.1"
   },
   "devDependencies": {
-    "@xbyorange/mocks-server": "1.0.0"
+    "@xbyorange/mocks-server": "1.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
