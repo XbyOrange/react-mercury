@@ -1,0 +1,14 @@
+.app {
+  text-align: left;
+  padding: 20px;
+}
+
+body: {
+  padding: 20px;
+}
+
+.component {
+  border: 1px solid red;
+  padding: 10px;
+  margin: 10px;
+}
