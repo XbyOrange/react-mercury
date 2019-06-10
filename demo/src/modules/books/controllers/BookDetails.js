@@ -1,8 +1,8 @@
 import { connect } from "@xbyorange/react-mercury";
 
-import { booksModels } from "../../../data-sources/booksModels";
+import { booksModels } from "../../../data/books";
 
-import { BookDetails as BookDetailsComponent } from "../../../components/books/BookDetails";
+import { default as BookDetailsComponent } from "../../../components/book-details";
 
 export const mapDataSourceToProps = ({ id }) => ({
   book: booksModels.byId(id).read

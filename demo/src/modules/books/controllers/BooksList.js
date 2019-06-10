@@ -1,8 +1,8 @@
 import { connect } from "@xbyorange/react-mercury";
 
-import { booksCollection, booksFilteredAndSorted } from "../../../data-sources/booksCollection";
+import { booksCollection, booksFilteredAndSorted } from "../../../data/books";
 
-import { BooksList as BooksListComponent } from "../../../components/books/BooksList";
+import { default as BooksListComponent } from "../../../components/books-list";
 
 export const mapDataSourceToProps = () => ({
   books: booksCollection.read

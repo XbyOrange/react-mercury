@@ -1,8 +1,8 @@
 import { connect } from "@xbyorange/react-mercury";
 
-import { booksSearchFilters } from "../../../data-sources/booksSearchFilters";
+import { booksSearchFilters } from "../../../data/books";
 
-import { BooksSearch as BooksSearchComponent } from "../../../components/books/BooksSearch";
+import { default as BooksSearchComponent } from "../../../components/books-search";
 
 export const mapDataSourceToProps = () => ({
   titleFilter: booksSearchFilters.query("title").read,

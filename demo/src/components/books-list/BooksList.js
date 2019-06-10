@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-import { Loading } from "../loading/Loading";
-import { ErrorComponent } from "../error/Error";
+import Loading from "../loading";
+import ErrorComponent from "../error";
 
 export const BooksList = ({ books, baseUrl, Delete }) => {
   const booksList = books.value;

@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { BooksList, BooksListFiltered } from "./views/BooksList";
-import { BooksSearch } from "./views/BooksSearch";
-import { BookDetails } from "./views/BookDetails";
-import { UpdateBook } from "./views/UpdateBook";
-import { CreateBook } from "./views/CreateBook";
-import { DeleteBook } from "./views/DeleteBook";
+import { BooksList, BooksListFiltered } from "../controllers/BooksList";
+import { BooksSearch } from "../controllers/BooksSearch";
+import { BookDetails } from "../controllers/BookDetails";
+import { UpdateBook } from "../controllers/UpdateBook";
+import { CreateBook } from "../controllers/CreateBook";
+import { DeleteBook } from "../controllers/DeleteBook";
 
 export const BooksListLayout = ({ match }) => (
   <div className="component">

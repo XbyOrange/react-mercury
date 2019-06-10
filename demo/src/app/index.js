@@ -2,12 +2,11 @@ import React from "react";
 import { Route } from "react-router";
 import { BrowserRouter, Redirect, Switch } from "react-router-dom";
 
-import { routes, sectionsAsArray } from "./routes";
+import { routes, sectionsAsArray } from "./Router";
 
 import { baseApi } from "./config";
 
-import { booksCollection } from "../data-sources/booksCollection";
-import { booksModels } from "../data-sources/booksModels";
+import { booksCollection, booksModels } from "../data/books";
 
 import "./app.css";
 
@@ -15,6 +14,7 @@ const dataSourcesConfig = {
   baseUrl: baseApi
 };
 
+// TODO: REFACTOR THIS!
 booksCollection.config(dataSourcesConfig);
 booksModels.config(dataSourcesConfig);
 

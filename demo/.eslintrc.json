@@ -1,0 +1,24 @@
+{
+  "parser": "babel-eslint",
+  "plugins": ["prettier", "@nex/eslint-plugin-modular-react"],
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "printWidth": 99,
+        "parser": "flow"
+      }
+    ],
+    "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }]
+  },
+  "extends": ["plugin:react/recommended", "prettier", "plugin:@nex/modular-react/recommended"],
+  "root": true,
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "@nex/modular-react/style-files": "*.css",
+    "@nex/modular-react/custom-pieces": ["src/index.js", "src/app/config.js"],
+    "@nex/modular-react/ignore": ["src/app/index.js"]
+  }
+}

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { ErrorComponent } from "../error/Error";
+import ErrorComponent from "../error";
 
 export class CreateBook extends React.Component {
   constructor(props) {

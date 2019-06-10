@@ -1,0 +1,5 @@
+{
+  "rules": {
+    "@nex/modular-react/no-invalid-dependency-with-react-router-dom": 0
+  }
+}

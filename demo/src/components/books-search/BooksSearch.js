@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { BooksSearchBar } from "./BooksSearchBar";
+import BooksSearchBar from "../books-search-bar";
 
 export class BooksSearch extends React.Component {
   constructor(props) {

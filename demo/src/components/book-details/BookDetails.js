@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Loading } from "../loading/Loading";
-import { ErrorComponent } from "../error/Error";
+import Loading from "../loading";
+import ErrorComponent from "../error";
 
 export const BookDetails = ({ book }) => {
   const bookDetails = book.value || [];

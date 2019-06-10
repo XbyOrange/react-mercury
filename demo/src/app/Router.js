@@ -1,5 +1,5 @@
-import { NotFound } from "../components/not-found/NotFound";
-import { MainRouter as BooksRouter } from "../modules/books/Routers";
+import NotFound from "../components/not-found";
+import { default as BooksRouter } from "../modules/books";
 
 export const routes = {
   index: {

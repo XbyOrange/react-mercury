@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Route } from "react-router";
 import { Switch } from "react-router-dom";
 
-import { BooksListLayout, BooksDetailsLayout } from "./Layouts";
+import { BooksListLayout, BooksDetailsLayout } from "../views/Layouts";
 
 export const MainRouter = ({ match }) => (
   <Switch>
