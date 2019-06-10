@@ -7,7 +7,7 @@ export class CreateBook extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: "",
+      id: props.id || "",
       title: ""
     };
 
@@ -70,5 +70,6 @@ export class CreateBook extends React.Component {
 }
 
 CreateBook.propTypes = {
-  createBook: PropTypes.any
+  createBook: PropTypes.any,
+  id: PropTypes.string
 };

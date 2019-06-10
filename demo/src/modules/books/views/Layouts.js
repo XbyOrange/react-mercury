@@ -7,12 +7,13 @@ import { BookDetails } from "../controllers/BookDetails";
 import { UpdateBook } from "../controllers/UpdateBook";
 import { CreateBook } from "../controllers/CreateBook";
 import { DeleteBook } from "../controllers/DeleteBook";
+import { idGenerator } from "../../../helpers/id-generator";
 
 export const BooksListLayout = ({ match }) => (
   <div className="component">
     <h2>Books</h2>
     <BooksList baseUrl={match.url} Delete={DeleteBook} />
-    <CreateBook />
+    <CreateBook id={idGenerator()} />
     <BooksSearch>
       <BooksListFiltered baseUrl={match.url} Delete={DeleteBook} />
     </BooksSearch>
