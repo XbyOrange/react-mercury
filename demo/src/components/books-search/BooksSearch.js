@@ -16,26 +16,29 @@ export class BooksSearch extends React.Component {
   componentDidUpdate(prevProps) {
     if (
       prevProps.titleFilter !== this.props.titleFilter ||
+      prevProps.yearFilter !== this.props.yearFilter ||
       prevProps.sortBy !== this.props.sortBy
     ) {
       this.setState({
         booksLists: this.childsWithTitleFilter(
           this.props.titleFilter.value,
+          this.props.yearFilter.value,
           this.props.sortBy.value
         )
       });
     }
   }
 
-  childsWithTitleFilter(titleFilter, sortBy) {
+  childsWithTitleFilter(titleFilter, yearFilter, sortBy) {
     return React.Children.map(this.props.children, child =>
-      React.cloneElement(child, { titleFilter, sortBy })
+      React.cloneElement(child, { titleFilter, yearFilter, sortBy })
     );
   }
 
-  handleSearchChange({ title, sortBy }) {
+  handleSearchChange({ title, year, sortBy }) {
     this.props.updateFilters.dispatch({
       title,
+      year,
       sortBy
     });
   }
@@ -46,6 +49,7 @@ export class BooksSearch extends React.Component {
         <h3>Books search</h3>
         <BooksSearchBar
           title={this.props.titleFilter.value}
+          year={this.props.yearFilter.value}
           sortBy={this.props.sortBy.value}
           onChange={this.handleSearchChange}
         />
@@ -57,11 +61,13 @@ export class BooksSearch extends React.Component {
 
 BooksSearch.defaultProps = {
   titleFilter: {},
+  yearFilter: {},
   sortBy: {}
 };
 
 BooksSearch.propTypes = {
   titleFilter: PropTypes.any,
+  yearFilter: PropTypes.any,
   sortBy: PropTypes.any,
   updateFilters: PropTypes.func,
   children: PropTypes.node

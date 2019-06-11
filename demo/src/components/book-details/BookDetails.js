@@ -13,6 +13,7 @@ export const BookDetails = ({ book }) => {
     <ul>
       <li> Id: {bookDetails.id}</li>
       <li> Title: {bookDetails.title}</li>
+      <li> Year: {bookDetails.year}</li>
     </ul>
   );
 

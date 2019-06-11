@@ -8,10 +8,12 @@ export class UpdateBook extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: ""
+      title: "",
+      year: ""
     };
 
     this.handleTitleChange = this.handleTitleChange.bind(this);
+    this.handleYearChange = this.handleYearChange.bind(this);
 
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -22,10 +24,17 @@ export class UpdateBook extends React.Component {
     });
   }
 
+  handleYearChange(event) {
+    this.setState({
+      year: event.target.value
+    });
+  }
+
   handleSubmit(event) {
     this.props.updateBook.dispatch({
       id: this.props.book.value.id,
-      title: this.state.title || this.props.book.value.title
+      title: this.state.title || this.props.book.value.title,
+      year: this.state.year || this.props.book.value.year
     });
     event.preventDefault();
   }
@@ -56,6 +65,18 @@ export class UpdateBook extends React.Component {
                 this.state.title || ((this.props.book.value && this.props.book.value.title) || "")
               }
               onChange={this.handleTitleChange}
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Year:
+            <input
+              type="text"
+              value={
+                this.state.year || ((this.props.book.value && this.props.book.value.year) || "")
+              }
+              onChange={this.handleYearChange}
             />
           </label>
         </div>

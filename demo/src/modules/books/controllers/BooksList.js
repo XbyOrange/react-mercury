@@ -11,7 +11,7 @@ export const mapDataSourceToProps = () => ({
 export const BooksList = connect(mapDataSourceToProps)(BooksListComponent);
 
 export const mapDataSourceToPropsFiltered = props => ({
-  books: booksFilteredAndSorted.titleContaining(props.titleFilter).sortBy(props.sortBy).read
+  books: booksFilteredAndSorted.titleContaining(props.titleFilter).year(props.yearFilter).sortBy(props.sortBy).read
 });
 
 export const BooksListFiltered = connect(mapDataSourceToPropsFiltered)(BooksListComponent);

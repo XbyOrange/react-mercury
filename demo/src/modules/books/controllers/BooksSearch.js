@@ -6,6 +6,7 @@ import { default as BooksSearchComponent } from "../../../components/books-searc
 
 export const mapDataSourceToProps = () => ({
   titleFilter: booksSearchFilters.query("title").read,
+  yearFilter: booksSearchFilters.query("year").read,
   sortBy: booksSearchFilters.query("sortBy").read,
   updateFilters: booksSearchFilters.update
 });

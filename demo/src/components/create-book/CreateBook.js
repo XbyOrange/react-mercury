@@ -8,10 +8,12 @@ export class CreateBook extends React.Component {
     super(props);
     this.state = {
       id: props.id || "",
-      title: ""
+      title: "",
+      year: ""
     };
 
     this.handleTitleChange = this.handleTitleChange.bind(this);
+    this.handleYearChange = this.handleYearChange.bind(this);
     this.handleIdChange = this.handleIdChange.bind(this);
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -28,6 +30,13 @@ export class CreateBook extends React.Component {
     this.setState({
       ...this.state,
       title: event.target.value
+    });
+  }
+
+  handleYearChange(event) {
+    this.setState({
+      ...this.state,
+      year: event.target.value
     });
   }
 
@@ -60,6 +69,12 @@ export class CreateBook extends React.Component {
             <label>
               Title:
               <input type="text" value={this.state.title} onChange={this.handleTitleChange} />
+            </label>
+          </div>
+          <div>
+            <label>
+              Year:
+              <input type="text" value={this.state.year} onChange={this.handleYearChange} />
             </label>
           </div>
           {button}

@@ -13,13 +13,24 @@ export const booksFiltered = new Selector(
   []
 );
 
-// Example of a Selector with a filter being sent to the server, and sortering locally
+// Example of a Selector with a filter being sent to the server, another filter resolved locally by client and sortering locally
 export const booksFilteredAndSorted = new Selector(
   {
     source: booksFiltered,
     query: query => query && query.titleContaining
   },
-  (booksResults, filter) => sortBy(booksResults, (filter && filter.sortBy) || "id"),
+  (booksResults, filter) => {
+    const { year } = filter;
+
+    // year query property is not sent to server, the books results are filtered by client
+    if (year) {
+      booksResults = booksResults.filter((book) => {
+        return book.year.startsWith(year);
+      });
+    }
+
+    return sortBy(booksResults, (filter && filter.sortBy) || "id");
+  },
   []
 );
 
@@ -29,5 +40,6 @@ booksFilteredAndSorted.addCustomQuery({
 });
 
 booksFilteredAndSorted.addCustomQuery({
-  titleContaining: titleContaining => ({ titleContaining })
+  titleContaining: titleContaining => ({ titleContaining }),
+  year: year => ({ year })
 });
