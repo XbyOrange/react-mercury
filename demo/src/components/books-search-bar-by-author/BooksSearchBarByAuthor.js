@@ -2,13 +2,13 @@ import React from "react";
 import { debounce } from "lodash";
 import PropTypes from "prop-types";
 
-export class BooksSearchBar extends React.Component {
+export class BooksSearchBarByAuthor extends React.Component {
   constructor(props) {
     super(props);
     this.state = this.propsToState();
 
     this.handleTitleChange = this.handleTitleChange.bind(this);
-    this.handleYearChange = this.handleYearChange.bind(this);
+    this.handleAuthorChange = this.handleAuthorChange.bind(this);
     this.handleSortChange = this.handleSortChange.bind(this);
     this.handleChange = debounce(this.handleChange, 300).bind(this);
   }
@@ -16,7 +16,7 @@ export class BooksSearchBar extends React.Component {
   componentDidUpdate(prevProps) {
     if (
       prevProps.title !== this.props.title ||
-      prevProps.year !== this.props.year ||
+      prevProps.author !== this.props.author ||
       prevProps.sortBy !== this.props.sortBy
     ) {
       this.setState(this.propsToState());
@@ -26,7 +26,7 @@ export class BooksSearchBar extends React.Component {
   propsToState() {
     return {
       title: this.props.title || "",
-      year: this.props.year || "",
+      author: this.props.author || "",
       sortBy: this.props.sortBy || "id"
     };
   }
@@ -39,10 +39,10 @@ export class BooksSearchBar extends React.Component {
     this.handleChange();
   }
 
-  handleYearChange(event) {
+  handleAuthorChange(event) {
     this.setState({
       ...this.state,
-      year: event.target.value
+      author: event.target.value
     });
     this.handleChange();
   }
@@ -62,28 +62,38 @@ export class BooksSearchBar extends React.Component {
   render() {
     return (
       <div className="component">
+        By author
+        <select onChange={this.handleAuthorChange} value={this.state.author}>
+          <option value="" />
+          {this.props.authors.map(author => (
+            <option key={author.id} value={author.id}>
+              {author.name}
+            </option>
+          ))}
+        </select>
         By title <input type="text" value={this.state.title} onChange={this.handleTitleChange} />
-        By year <input type="text" value={this.state.year} onChange={this.handleYearChange} />
         Sort by
         <select onChange={this.handleSortChange} value={this.state.sortBy}>
           <option value="id">id</option>
           <option value="title">title</option>
-          <option value="year">year</option>
+          <option value="author">author</option>
         </select>
       </div>
     );
   }
 }
 
-BooksSearchBar.defaultProps = {
+BooksSearchBarByAuthor.defaultProps = {
+  authors: [],
   title: "",
-  year: "",
+  author: "",
   sortBy: "id"
 };
 
-BooksSearchBar.propTypes = {
+BooksSearchBarByAuthor.propTypes = {
+  authors: PropTypes.array,
   onChange: PropTypes.func,
   title: PropTypes.string,
-  year: PropTypes.string,
+  author: PropTypes.string,
   sortBy: PropTypes.string
 };

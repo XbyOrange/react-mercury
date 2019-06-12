@@ -7,6 +7,7 @@ import { routes, sectionsAsArray } from "./Router";
 import { baseApi } from "./config";
 
 import { booksCollection, booksModels } from "../data/books";
+import { authorsCollection, authorsBooksCollection } from "../data/authors";
 
 import "./app.css";
 
@@ -17,6 +18,8 @@ const dataSourcesConfig = {
 // TODO: REFACTOR THIS!
 booksCollection.config(dataSourcesConfig);
 booksModels.config(dataSourcesConfig);
+authorsCollection.config(dataSourcesConfig);
+authorsBooksCollection.config(dataSourcesConfig);
 
 export class App extends React.Component {
   render() {

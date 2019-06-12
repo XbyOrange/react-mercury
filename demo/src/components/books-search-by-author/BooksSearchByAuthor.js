@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import BooksSearchBar from "../books-search-bar";
+import BooksSearchBarByAuthor from "../books-search-bar-by-author";
 
-export class BooksSearch extends React.Component {
+export class BooksSearchByAuthor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,29 +16,29 @@ export class BooksSearch extends React.Component {
   componentDidUpdate(prevProps) {
     if (
       prevProps.titleFilter !== this.props.titleFilter ||
-      prevProps.yearFilter !== this.props.yearFilter ||
+      prevProps.authorFilter !== this.props.authorFilter ||
       prevProps.sortBy !== this.props.sortBy
     ) {
       this.setState({
         booksLists: this.childsWithTitleFilter(
           this.props.titleFilter.value,
-          this.props.yearFilter.value,
+          this.props.authorFilter.value,
           this.props.sortBy.value
         )
       });
     }
   }
 
-  childsWithTitleFilter(titleFilter, yearFilter, sortBy) {
+  childsWithTitleFilter(titleFilter, authorFilter, sortBy) {
     return React.Children.map(this.props.children, child =>
-      React.cloneElement(child, { titleFilter, yearFilter, sortBy })
+      React.cloneElement(child, { titleFilter, authorFilter, sortBy })
     );
   }
 
-  handleSearchChange({ title, year, sortBy }) {
+  handleSearchChange({ title, author, sortBy }) {
     this.props.updateFilters.dispatch({
       title,
-      year,
+      author,
       sortBy
     });
   }
@@ -46,11 +46,12 @@ export class BooksSearch extends React.Component {
   render() {
     return (
       <div className="component">
-        <h3>Books search</h3>
-        <BooksSearchBar
+        <h3>Books search by author</h3>
+        <BooksSearchBarByAuthor
           title={this.props.titleFilter.value}
-          year={this.props.yearFilter.value}
+          author={this.props.authorFilter.value}
           sortBy={this.props.sortBy.value}
+          authors={this.props.authors.value}
           onChange={this.handleSearchChange}
         />
         {this.state.booksLists}
@@ -59,15 +60,17 @@ export class BooksSearch extends React.Component {
   }
 }
 
-BooksSearch.defaultProps = {
+BooksSearchByAuthor.defaultProps = {
+  authors: [],
   titleFilter: {},
-  yearFilter: {},
+  authorFilter: {},
   sortBy: {}
 };
 
-BooksSearch.propTypes = {
+BooksSearchByAuthor.propTypes = {
+  authors: PropTypes.any,
   titleFilter: PropTypes.any,
-  yearFilter: PropTypes.any,
+  authorFilter: PropTypes.any,
   sortBy: PropTypes.any,
   updateFilters: PropTypes.object,
   children: PropTypes.node

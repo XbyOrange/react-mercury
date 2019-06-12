@@ -14,7 +14,10 @@ export const BooksList = ({ books, baseUrl, Delete }) => {
     <ul>
       {booksList.map(book => (
         <li key={book.id}>
-          <Link to={`${baseUrl}/${book.id}`}>{book.title} ({book.year})</Link> <Delete id={book.id} />
+          <Link to={`${baseUrl}/${book.id}`}>
+            {book.title} ({book.year})
+          </Link>{" "}
+          <Delete id={book.id} />
         </li>
       ))}
     </ul>
@@ -35,7 +38,7 @@ export const BooksList = ({ books, baseUrl, Delete }) => {
 };
 
 BooksList.propTypes = {
-  books: PropTypes.array,
+  books: PropTypes.object,
   baseUrl: PropTypes.string,
   Delete: PropTypes.func
 };

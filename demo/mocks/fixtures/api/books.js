@@ -20,8 +20,8 @@ books.add({
 
 books.add({
   id: "4",
-  title: "La vida de Lazarillo de Tormes y de sus fortunas y adversidades",
-  year: "1550"
+  title: "El conde Lucanor",
+  year: "1335"
 });
 
 const getBooks = {
@@ -33,6 +33,13 @@ const getBooks = {
       res.send(
         Array.from(books).filter(book =>
           book.title.toLowerCase().includes(req.query.title_containing.toLowerCase())
+        )
+      );
+    } else if (req.query.bookIds) {
+      const bookIdsArray = req.query.bookIds.split(',');
+      res.send(
+        Array.from(books).filter(book =>
+          bookIdsArray.includes(book.id)
         )
       );
     } else {

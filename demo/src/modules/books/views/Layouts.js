@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { BooksList, BooksListFiltered } from "../controllers/BooksList";
-import { BooksSearch } from "../controllers/BooksSearch";
+import { BooksList, BooksListFiltered, BooksListFilteredByAuthor } from "../controllers/BooksList";
+import { BooksSearch, BooksSearchByAuthor } from "../controllers/BooksSearch";
 import { BookDetails } from "../controllers/BookDetails";
 import { UpdateBook } from "../controllers/UpdateBook";
 import { CreateBook } from "../controllers/CreateBook";
@@ -17,6 +17,9 @@ export const BooksListLayout = ({ match }) => (
     <BooksSearch>
       <BooksListFiltered baseUrl={match.url} Delete={DeleteBook} />
     </BooksSearch>
+    <BooksSearchByAuthor>
+      <BooksListFilteredByAuthor baseUrl={match.url} Delete={DeleteBook} />
+    </BooksSearchByAuthor>
   </div>
 );
 
