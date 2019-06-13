@@ -8,6 +8,7 @@ import { baseApi } from "./config";
 
 import { booksCollection, booksModels } from "../data/books";
 import { authorsCollection, authorsBooksCollection } from "../data/authors";
+import { desktopCollection, mobileCollection } from "../data/media-query";
 
 import "./app.css";
 
@@ -20,6 +21,8 @@ booksCollection.config(dataSourcesConfig);
 booksModels.config(dataSourcesConfig);
 authorsCollection.config(dataSourcesConfig);
 authorsBooksCollection.config(dataSourcesConfig);
+desktopCollection.config(dataSourcesConfig);
+mobileCollection.config(dataSourcesConfig);
 
 export class App extends React.Component {
   render() {
