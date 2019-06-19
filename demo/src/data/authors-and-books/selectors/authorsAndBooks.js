@@ -3,7 +3,7 @@ import { booksCollection } from "../../books";
 import { authorsCollection, authorsBooksCollection } from "../../authors";
 
 // Example of a Selector with concurrent accesses to different origins and selectors
-export const authorsAndBooksFilteredAndSorted = new Selector(
+export const authorsAndBooks = new Selector(
   authorsCollection,
   {
     source: authorsBooksCollection,
