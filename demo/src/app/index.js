@@ -6,25 +6,13 @@ import { routes, sectionsAsArray } from "./Router";
 
 import { baseApi } from "./config";
 
-import { booksCollection, booksModels } from "../data/books";
-import { authorsCollection, authorsBooksCollection } from "../data/authors";
-import { desktopCollection, mobileCollection } from "../data/media-query";
-import { errorBooksCollection } from "../data/authors-and-books-errored";
+import { apis } from "@xbyorange/mercury-api";
 
 import "./app.css";
 
-const dataSourcesConfig = {
+apis.config({
   baseUrl: baseApi
-};
-
-// TODO: REFACTOR THIS!
-booksCollection.config(dataSourcesConfig);
-booksModels.config(dataSourcesConfig);
-authorsCollection.config(dataSourcesConfig);
-authorsBooksCollection.config(dataSourcesConfig);
-desktopCollection.config(dataSourcesConfig);
-mobileCollection.config(dataSourcesConfig);
-errorBooksCollection.config(dataSourcesConfig);
+});
 
 export class App extends React.Component {
   render() {

@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+import Loading from "../loading";
+import ErrorComponent from "../error";
 
 export class DeviceDataComponent extends React.Component {
   renderTable(results) {
@@ -21,12 +23,13 @@ export class DeviceDataComponent extends React.Component {
   render() {
     const info = this.props.deviceFilter.value,
       loading = this.props.deviceDataFiltered.loading,
+      error = this.props.deviceDataFiltered.error,
       data = this.props.deviceDataFiltered.value;
 
     return (
       <div className="component">
         <h3>{info.device} Mode</h3>
-        {loading ? "Loading..." : this.renderTable(data)}
+        {loading ? <Loading /> : error ? <ErrorComponent message={error.message} /> : this.renderTable(data)}
       </div>
     );
   }

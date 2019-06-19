@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+import Loading from "../loading";
+import ErrorComponent from "../error";
 
 export class AuthorsAndBooks extends React.Component {
   list(authorAndBooks) {
@@ -22,13 +24,11 @@ export class AuthorsAndBooks extends React.Component {
   }
 
   render() {
-    const loading = this.props.authorAndBooks.loading,
-      authorAndBooks = this.props.authorAndBooks.value;
-
+    const { loading, error, value } = this.props.authorAndBooks;
     return (
       <div className="component">
         <h3>Authors and Books list</h3>
-        {loading ? "Loading..." : this.list(authorAndBooks)}
+        {loading ? <Loading /> : error ? <ErrorComponent message={error.message} /> : this.list(value)}
       </div>
     );
   }
