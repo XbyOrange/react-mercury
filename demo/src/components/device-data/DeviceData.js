@@ -29,7 +29,13 @@ export class DeviceDataComponent extends React.Component {
     return (
       <div className="component">
         <h3>{info.device} Mode</h3>
-        {loading ? <Loading /> : error ? <ErrorComponent message={error.message} /> : this.renderTable(data)}
+        {loading ? (
+          <Loading />
+        ) : error ? (
+          <ErrorComponent message={error.message} />
+        ) : (
+          this.renderTable(data)
+        )}
       </div>
     );
   }

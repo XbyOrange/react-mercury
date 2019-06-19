@@ -28,7 +28,13 @@ export class AuthorsAndBooks extends React.Component {
     return (
       <div className="component">
         <h3>Authors and Books list</h3>
-        {loading ? <Loading /> : error ? <ErrorComponent message={error.message} /> : this.list(value)}
+        {loading ? (
+          <Loading />
+        ) : error ? (
+          <ErrorComponent message={error.message} />
+        ) : (
+          this.list(value)
+        )}
       </div>
     );
   }
