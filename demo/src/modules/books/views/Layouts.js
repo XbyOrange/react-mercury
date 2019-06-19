@@ -8,6 +8,7 @@ import { UpdateBook } from "../controllers/UpdateBook";
 import { CreateBook } from "../controllers/CreateBook";
 import { DeleteBook } from "../controllers/DeleteBook";
 import { DeviceData } from "../controllers/DeviceData";
+import { AuthorsAndBooks } from "../controllers/AuthorsAndBooks";
 import { idGenerator } from "../../../helpers/id-generator";
 
 export const BooksListLayout = ({ match }) => (
@@ -22,6 +23,7 @@ export const BooksListLayout = ({ match }) => (
       <BooksListFilteredByAuthor baseUrl={match.url} Delete={DeleteBook} />
     </BooksSearchByAuthor>
     <DeviceData />
+    <AuthorsAndBooks />
   </div>
 );
 

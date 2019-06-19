@@ -9,11 +9,13 @@ const getAuthorBooks = {
   url: "/authorbooks",
   method: "GET",
   response: (req, res) => {
-    const authorId = req.query.authorId;
+    const { authorId, all } = req.query;
 
     let bookIds;
     if (authorId) {
       bookIds = booksByAuthor[authorId];
+    } else if (all) {
+      bookIds = booksByAuthor;
     } else {
       bookIds = Object.values(booksByAuthor).reduce((acc, values) => {
         return acc.concat(values);
