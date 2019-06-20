@@ -36,12 +36,8 @@ const getBooks = {
         )
       );
     } else if (req.query.bookIds) {
-      const bookIdsArray = req.query.bookIds.split(',');
-      res.send(
-        Array.from(books).filter(book =>
-          bookIdsArray.includes(book.id)
-        )
-      );
+      const bookIdsArray = req.query.bookIds.split(",");
+      res.send(Array.from(books).filter(book => bookIdsArray.includes(book.id)));
     } else {
       res.send(Array.from(books));
     }
