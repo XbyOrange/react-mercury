@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@xbyorange/mocks-server": "1.0.1",
-    "@nex/eslint-plugin-modular-react": "^3.0.0",
+    "@nex/eslint-plugin-modular-react": "file:../../eslint-plugin-modular-react",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^4.3.0",
     "eslint-plugin-prettier": "^3.1.0",

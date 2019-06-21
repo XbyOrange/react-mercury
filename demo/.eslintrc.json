@@ -17,8 +17,6 @@
     "react": {
       "version": "detect"
     },
-    "@nex/modular-react/style-files": "*.css",
-    "@nex/modular-react/custom-pieces": ["src/index.js", "src/app/config.js"],
-    "@nex/modular-react/ignore": ["src/app/index.js"]
+    "@nex/modular-react/style-files": "*.css"
   }
 }
