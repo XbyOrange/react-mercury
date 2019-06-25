@@ -1,6 +1,5 @@
 import React from "react";
-import { Route } from "react-router";
-import { BrowserRouter, Redirect, Switch } from "react-router-dom";
+import { Route, BrowserRouter, Redirect, Switch } from "react-router-dom";
 
 import { routes, sectionsAsArray } from "./Router";
 
