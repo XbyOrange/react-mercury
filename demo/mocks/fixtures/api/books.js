@@ -2,17 +2,26 @@ const books = new Set();
 
 books.add({
   id: "3",
-  title: "Don Quijote de la Mancha"
+  title: "Don Quijote de la Mancha",
+  year: "1605"
 });
 
 books.add({
   id: "1",
-  title: "El viejo y el mar"
+  title: "El viejo y el mar",
+  year: "1952"
 });
 
 books.add({
   id: "2",
-  title: "El rayo que no cesa"
+  title: "El rayo que no cesa",
+  year: "1936"
+});
+
+books.add({
+  id: "4",
+  title: "El conde Lucanor",
+  year: "1335"
 });
 
 const getBooks = {
@@ -26,6 +35,9 @@ const getBooks = {
           book.title.toLowerCase().includes(req.query.title_containing.toLowerCase())
         )
       );
+    } else if (req.query.bookIds) {
+      const bookIdsArray = req.query.bookIds.split(",");
+      res.send(Array.from(books).filter(book => bookIdsArray.includes(book.id)));
     } else {
       res.send(Array.from(books));
     }
@@ -55,7 +67,7 @@ const addBook = {
     if (Array.from(books).find(book => book.id === req.body.id)) {
       res.status(409);
       res.send();
-    } else if (!book.id || !book.title) {
+    } else if (!book.id || !book.title || !book.year) {
       res.status(422);
       res.send();
     } else {
@@ -74,11 +86,12 @@ const updateBook = {
     if (!book) {
       res.status(404);
       res.send();
-    } else if (!req.body.title) {
+    } else if (!req.body.title || !req.body.year) {
       res.status(422);
       res.send();
     } else {
       book.title = req.body.title;
+      book.year = req.body.year;
       res.status(204);
       res.send(null);
     }

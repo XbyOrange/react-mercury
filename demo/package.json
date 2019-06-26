@@ -4,9 +4,10 @@
   "private": true,
   "dependencies": {
     "@xbyorange/mercury": "1.0.0",
-    "@xbyorange/mercury-api": "1.0.1",
+    "@xbyorange/mercury-api": "1.1.0",
     "@xbyorange/mercury-browser-storage": "1.0.0",
     "@xbyorange/react-mercury": "file:../",
+    "@xbyorange/mercury-memory": "1.0.0",
     "lodash": "^4.17.11",
     "prop-types": "^15.7.2",
     "react": "^16.7.0",

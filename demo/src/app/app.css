@@ -12,3 +12,11 @@ body: {
   padding: 10px;
   margin: 10px;
 }
+
+table, td {
+  border-collapse: collapse;
+}
+
+table, td, td {
+  border: 1px solid black;
+}
