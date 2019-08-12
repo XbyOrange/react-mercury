@@ -1,6 +1,6 @@
 {
   "name": "@xbyorange/react-mercury",
-  "version": "1.0.1",
+  "version": "1.1.0-beta.1",
   "description": "Plugin for connecting React components with Mercury origins or selectors",
   "keywords": [
     "reactive",
