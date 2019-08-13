@@ -68,6 +68,10 @@ export const connect = (mapSourcesToProps, parseProps) => {
         return sourceProps[propName];
       }
 
+      isMercurySource(prop) {
+        return prop && prop._isSourceMethod;
+      }
+
       getSourcesProps() {
         this.sourceProps = mapSourcesToProps(this.props);
         this.sourcePropsKeys = Object.keys(this.sourceProps);
@@ -79,7 +83,9 @@ export const connect = (mapSourcesToProps, parseProps) => {
             this.sourceProps[sourceKey] = this.sourceProps[sourceKey]._method;
           }
           // TODO, generate id in mercury. Remove id generation from here
-          this.sourcePropsIds[sourceKey] = getSourceId(this.sourceProps[sourceKey]._source);
+          if (this.isMercurySource(this.sourceProps[sourceKey])) {
+            this.sourcePropsIds[sourceKey] = getSourceId(this.sourceProps[sourceKey]._source);
+          }
         });
       }
 
@@ -101,22 +107,23 @@ export const connect = (mapSourcesToProps, parseProps) => {
               this.sourcePropsGetters[sourceKey]
             );
           } else {
-            sourcesProps[sourceKey] =
-              this.sourceProps[sourceKey] && this.sourceProps[sourceKey]._isSourceMethod
-                ? this.cleanSourceProps(
-                    this.sourceProps[sourceKey],
-                    this.sourcePropsGetters[sourceKey]
-                  )
-                : this.sourceProps[sourceKey];
+            sourcesProps[sourceKey] = this.isMercurySource(this.sourceProps[sourceKey])
+              ? this.cleanSourceProps(
+                  this.sourceProps[sourceKey],
+                  this.sourcePropsGetters[sourceKey]
+                )
+              : this.sourceProps[sourceKey];
           }
         });
         return sourcesProps;
       }
 
       updateState() {
-        this.setState({
-          sourceProps: this.getSourcesPropsValues()
-        });
+        if (!this._unmounted) {
+          this.setState({
+            sourceProps: this.getSourcesPropsValues()
+          });
+        }
       }
 
       logError(id, message) {
@@ -157,7 +164,7 @@ export const connect = (mapSourcesToProps, parseProps) => {
 
       addSourceListeners() {
         this.sourcePropsKeys.forEach(sourceKey => {
-          if (this.sourceProps[sourceKey] && this.sourceProps[sourceKey]._isSourceMethod) {
+          if (this.isMercurySource(this.sourceProps[sourceKey])) {
             this.sourcePropsReaders[sourceKey] = () => {
               if (this.sourceProps[sourceKey]._methodName === READ_METHOD) {
                 // TODO, why here source is accessed through "_source.read" and in dispatchAllRead is done through the main object?
@@ -167,9 +174,7 @@ export const connect = (mapSourcesToProps, parseProps) => {
 
             this.sourcePropsListeners[sourceKey] = methodName => {
               if (methodName === this.sourceProps[sourceKey]._methodName) {
-                if (!this._unmounted) {
-                  this.updateState();
-                }
+                this.updateState();
               }
             };
 
@@ -182,7 +187,7 @@ export const connect = (mapSourcesToProps, parseProps) => {
 
       removeSourceListeners() {
         this.sourcePropsKeys.forEach(sourceKey => {
-          if (this.sourceProps[sourceKey] && this.sourceProps[sourceKey]._isSourceMethod) {
+          if (this.isMercurySource(this.sourceProps[sourceKey])) {
             this.sourceProps[sourceKey]._source.removeCleanListener(
               this.sourcePropsReaders[sourceKey]
             );
