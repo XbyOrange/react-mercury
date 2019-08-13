@@ -37,7 +37,7 @@ export const booksFilteredAndSorted = new Selector(
 
 // Custom filters are optional, but improve the interface
 booksFilteredAndSorted.addCustomQuery({
-  sortBy: sortBy => ({ sortBy })
+  sortBy: sortedBy => ({ sortBy: sortedBy })
 });
 
 booksFilteredAndSorted.addCustomQuery({
@@ -88,7 +88,7 @@ export const authorsAndBooksFilteredAndSorted = new Selector(
 
 // Custom filters are optional, but improve the interface
 authorsAndBooksFilteredAndSorted.addCustomQuery({
-  sortBy: sortBy => ({ sortBy })
+  sortBy: sortedBy => ({ sortedBy })
 });
 
 authorsAndBooksFilteredAndSorted.addCustomQuery({

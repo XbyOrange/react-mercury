@@ -18,11 +18,11 @@ export const authorsAndBooks = new Selector(
       booksResults = results[2];
 
     const result = Object.keys(authorsAndBooksResults).map(authorId => {
-      const author = authorsResults.find(author => author.id === authorId);
+      const author = authorsResults.find(currentAuthor => currentAuthor.id === authorId);
       const bookIds = authorsAndBooksResults[authorId];
       const books = [];
       bookIds.forEach(bookId => {
-        const book = booksResults.find(book => book.id === bookId);
+        const book = booksResults.find(currentBook => currentBook.id === bookId);
         if (book) {
           books.push(book);
         }

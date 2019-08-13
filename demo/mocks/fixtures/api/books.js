@@ -64,7 +64,7 @@ const addBook = {
   method: "POST",
   response: (req, res) => {
     const book = req.body;
-    if (Array.from(books).find(book => book.id === req.body.id)) {
+    if (Array.from(books).find(currentBook => currentBook.id === req.body.id)) {
       res.status(409);
       res.send();
     } else if (!book.id || !book.title || !book.year) {
@@ -82,7 +82,7 @@ const updateBook = {
   url: "/books/:id",
   method: "PATCH",
   response: (req, res) => {
-    const book = Array.from(books).find(book => book.id === req.body.id);
+    const book = Array.from(books).find(currentBook => currentBook.id === req.body.id);
     if (!book) {
       res.status(404);
       res.send();
@@ -102,7 +102,7 @@ const deleteBook = {
   url: "/books/:id",
   method: "DELETE",
   response: (req, res) => {
-    const book = Array.from(books).find(book => book.id === req.params.id);
+    const book = Array.from(books).find(currentBook => currentBook.id === req.params.id);
     if (!book) {
       res.status(404);
       res.send();
