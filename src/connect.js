@@ -137,8 +137,12 @@ export const connect = (mapSourcesToProps, parseProps) => {
       }
 
       dispatchRead(source, sourceKey) {
-        // Source has server side data
-        if (this.context && this.context.clientSide) {
+        if (
+          this.context &&
+          (this.context.clientSide ||
+            !this.context.data ||
+            !this.context.data[this.sourcePropsIds[sourceKey]])
+        ) {
           return source
             .dispatch()
             .catch(error => {

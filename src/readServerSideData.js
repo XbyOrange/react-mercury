@@ -1,4 +1,7 @@
+import { isArray } from "lodash";
 import { getSourceId } from "./helpers";
+
+const serverSideData = new Set();
 
 const getSourceData = source => {
   return source.read().then(result => {
@@ -18,5 +21,16 @@ const resultsToObject = results => {
   );
 };
 
-export const readServerSideData = (...args) =>
-  Promise.all(args.map(getSourceData)).then(resultsToObject);
+export const addServerSideData = sources => {
+  const sourcesToAdd = isArray(sources) ? sources : [sources];
+  sourcesToAdd.forEach(source => {
+    serverSideData.add(source);
+  });
+};
+
+export const readServerSideData = (...args) => {
+  args.forEach(source => {
+    addServerSideData(source);
+  });
+  return Promise.all(Array.from(serverSideData).map(getSourceData)).then(resultsToObject);
+};

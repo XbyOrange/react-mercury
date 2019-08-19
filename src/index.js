@@ -1,3 +1,3 @@
 export { connect } from "./connect";
-export { readServerSideData } from "./readServerSideData";
+export { readServerSideData, addServerSideData } from "./readServerSideData";
 export { ServerSideData } from "./ServerSideData";
