@@ -42,7 +42,7 @@
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
-    "@xbyorange/mercury-api": "1.0.1",
+    "@xbyorange/mercury-api": "1.2.0",
     "axios": "^0.19.0",
     "axios-retry": "^3.1.2",
     "babel-core": "^7.0.0-bridge.0",

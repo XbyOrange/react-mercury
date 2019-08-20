@@ -3,8 +3,10 @@ import Enzyme, { shallow, mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import PropTypes from "prop-types";
 import AxiosMock from "./Axios.mock.js";
+import { Selector } from "@xbyorange/mercury";
 import { Api } from "@xbyorange/mercury-api";
-import { connect } from "../src/index";
+import sinon from "sinon";
+import { connect, readServerSideData, addServerSideData, ServerSideData } from "../src/index";
 
 import jsdom from "jsdom";
 const { JSDOM } = jsdom;
@@ -81,19 +83,35 @@ describe("react connect plugin", () => {
       author: "Hemingway"
     }
   ];
+  let sandbox;
   let books;
+  let booksServerSide;
   let axios;
 
   beforeAll(() => {
+    sandbox = sinon.createSandbox();
     axios = new AxiosMock();
     books = new Api("/books", {
       defaultValue: []
     });
+    booksServerSide = new Api("/books", {
+      defaultValue: []
+    });
+
     books.client = axios._stub;
+    booksServerSide.client = axios._stub;
+    sandbox.spy(booksServerSide, "read");
+
+    addServerSideData(booksServerSide);
   });
 
   afterAll(() => {
     axios.restore();
+    sandbox.restore();
+  });
+
+  afterEach(() => {
+    sandbox.reset();
   });
 
   beforeEach(() => {
@@ -131,6 +149,178 @@ describe("react connect plugin", () => {
     await books.read();
     wrapper.update();
     expect(wrapper.find("li.book").length).toEqual(2);
+    wrapper.unmount();
+  });
+
+  it("if source is not server side, it should pass source properties to component and update value when finish loading even when clientSide is disabled in context", async () => {
+    expect.assertions(2);
+    const mapDataSourceToProps = () => ({
+      books: books.read
+    });
+    const ConnectedBooks = connect(mapDataSourceToProps)(BooksList);
+
+    const wrapper = mount(
+      <ServerSideData data={{}} clientSide={false}>
+        <ConnectedBooks />
+      </ServerSideData>
+    );
+    books.clean();
+    wrapper.update();
+    expect(wrapper.find(".loading").length).toEqual(1);
+    await books.read();
+    wrapper.update();
+    expect(wrapper.find("li.book").length).toEqual(2);
+    wrapper.unmount();
+  });
+
+  it("should render serverSide properties, update value when finish loading, and do not update loading property", async () => {
+    expect.assertions(6);
+    const mapDataSourceToProps = () => ({
+      books: booksServerSide.read
+    });
+    const ConnectedBooks = connect(mapDataSourceToProps)(BooksList);
+
+    const serverSideData = await readServerSideData();
+
+    const wrapper = mount(
+      <ServerSideData data={serverSideData} clientSide={true}>
+        <ConnectedBooks />
+      </ServerSideData>
+    );
+
+    expect(wrapper.find(".loading").length).toEqual(0);
+    expect(wrapper.find("li.book").length).toEqual(2);
+
+    booksServerSide.read();
+    wrapper.update();
+    expect(wrapper.find(".loading").length).toEqual(0);
+    expect(wrapper.find("li.book").length).toEqual(2);
+
+    await booksServerSide.read();
+    wrapper.update();
+    expect(wrapper.find(".loading").length).toEqual(0);
+    expect(wrapper.find("li.book").length).toEqual(2);
+    wrapper.unmount();
+  });
+
+  it("should render serverSide properties, update value when finish loading, and do not update loading property when passing a selector", async () => {
+    expect.assertions(6);
+    const booksServerSideSelector = new Selector(booksServerSide, result => result, []);
+    addServerSideData(booksServerSideSelector);
+    const mapDataSourceToProps = () => ({
+      books: booksServerSideSelector.read
+    });
+    const ConnectedBooks = connect(mapDataSourceToProps)(BooksList);
+
+    const serverSideData = await readServerSideData();
+
+    const wrapper = mount(
+      <ServerSideData data={serverSideData}>
+        <ConnectedBooks />
+      </ServerSideData>
+    );
+
+    expect(wrapper.find(".loading").length).toEqual(0);
+    expect(wrapper.find("li.book").length).toEqual(2);
+
+    booksServerSideSelector.read();
+    wrapper.update();
+    expect(wrapper.find(".loading").length).toEqual(0);
+    expect(wrapper.find("li.book").length).toEqual(2);
+
+    await booksServerSideSelector.read();
+    wrapper.update();
+    expect(wrapper.find(".loading").length).toEqual(0);
+    expect(wrapper.find("li.book").length).toEqual(2);
+    wrapper.unmount();
+  });
+
+  it("serverSideData behavior should work when adding many sources to readServerSideData", async () => {
+    expect.assertions(6);
+    const booksServerSideSelector = new Selector(booksServerSide, result => result, []);
+    addServerSideData([booksServerSideSelector, booksServerSide]);
+    const mapDataSourceToProps = () => ({
+      books: booksServerSideSelector.read
+    });
+    const ConnectedBooks = connect(mapDataSourceToProps)(BooksList);
+
+    const serverSideData = await readServerSideData(booksServerSideSelector);
+
+    const wrapper = mount(
+      <ServerSideData data={serverSideData} clientSide={true}>
+        <ConnectedBooks />
+      </ServerSideData>
+    );
+
+    expect(wrapper.find(".loading").length).toEqual(0);
+    expect(wrapper.find("li.book").length).toEqual(2);
+
+    booksServerSideSelector.read();
+    wrapper.update();
+    expect(wrapper.find(".loading").length).toEqual(0);
+    expect(wrapper.find("li.book").length).toEqual(2);
+
+    await booksServerSideSelector.read();
+    wrapper.update();
+    expect(wrapper.find(".loading").length).toEqual(0);
+    expect(wrapper.find("li.book").length).toEqual(2);
+    wrapper.unmount();
+  });
+
+  it("serverSideData behavior should work with queried selectors and getters", async () => {
+    expect.assertions(6);
+    const booksServerSideSelector = new Selector(booksServerSide, result => result, []);
+    const queriedBooksServerSideSelector = booksServerSideSelector.query("foo");
+    addServerSideData(queriedBooksServerSideSelector);
+    const mapDataSourceToProps = () => ({
+      booksValue: queriedBooksServerSideSelector.read.getters.value,
+      booksLoading: queriedBooksServerSideSelector.read.getters.loading,
+      booksError: queriedBooksServerSideSelector.read.getters.error
+    });
+    const ConnectedBooks = connect(mapDataSourceToProps)(BooksList);
+
+    const serverSideData = await readServerSideData();
+
+    const wrapper = mount(
+      <ServerSideData data={serverSideData} clientSide={true}>
+        <ConnectedBooks />
+      </ServerSideData>
+    );
+
+    expect(wrapper.find(".loading").length).toEqual(0);
+    expect(wrapper.find("li.book").length).toEqual(2);
+
+    queriedBooksServerSideSelector.read();
+    wrapper.update();
+    expect(wrapper.find(".loading").length).toEqual(0);
+    expect(wrapper.find("li.book").length).toEqual(2);
+
+    await queriedBooksServerSideSelector.read();
+    wrapper.update();
+    expect(wrapper.find(".loading").length).toEqual(0);
+    expect(wrapper.find("li.book").length).toEqual(2);
+    wrapper.unmount();
+  });
+
+  it("should render serverSide properties and do not dispath read if clientSide is disabled", async () => {
+    expect.assertions(3);
+    const mapDataSourceToProps = () => ({
+      books: booksServerSide.read
+    });
+    const ConnectedBooks = connect(mapDataSourceToProps)(BooksList);
+
+    const serverSideData = await readServerSideData();
+
+    const wrapper = mount(
+      <ServerSideData data={serverSideData} clientSide={false}>
+        <ConnectedBooks />
+      </ServerSideData>
+    );
+
+    expect(wrapper.find(".loading").length).toEqual(0);
+    expect(wrapper.find("li.book").length).toEqual(2);
+    expect(booksServerSide.read.callCount).toEqual(1);
+
     wrapper.unmount();
   });
 
