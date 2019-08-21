@@ -22,15 +22,15 @@ const resultsToObject = results => {
 };
 
 export const addServerSideData = sources => {
-  const sourcesToAdd = isArray(sources) ? sources : [sources];
-  sourcesToAdd.forEach(source => {
-    serverSideData.add(source);
-  });
+  if (sources) {
+    const sourcesToAdd = isArray(sources) ? sources : [sources];
+    sourcesToAdd.forEach(source => {
+      serverSideData.add(source);
+    });
+  }
 };
 
-export const readServerSideData = (...args) => {
-  args.forEach(source => {
-    addServerSideData(source);
-  });
+export const readServerSideData = sources => {
+  addServerSideData(sources);
   return Promise.all(Array.from(serverSideData).map(getSourceData)).then(resultsToObject);
 };
