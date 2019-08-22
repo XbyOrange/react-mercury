@@ -177,6 +177,71 @@ export const ConnectedModule = connect(
 
 > This parser function should not be used as a replacement to Mercury Selectors. As a good practice, the preference is to use Selectors if possible instead of this function.
 
+## Prefetching data on server side rendering
+
+Methods for prefetching data on server side rendering are available too. When data is prefetched in server side, the connect function will pass the `value` property calculated on server side to the components directly. It will not modify the `loading` property until the first load on client side is finished (At first client-side load, the resource will not be considered as `loading` to maintain the server-side value in the component until it finish loading).
+
+### Server side data methods and components
+
+* `addServerSideData(source)`
+	* Arguments
+		* source - `<Object> or <Array> of <Objects>` Mercury source or sources that should be read when `readServerSideData` method is executed. Can be Mercury origins or selectors of any type, queried or not.
+* `readServerSideData([source])`
+	* Arguments
+		* source - `<Object> or <Array> of <Objects>` Mercury source or sources that should be read when `readServerSideData` method is executed. Can be Mercury origins or selectors of any type, queried or not.
+	* Returns
+		* `<Object>` This method is asynchronous, and returns an object containing all server side data ready to be set on the `<ServerSideData>` context component.
+* `<ServerSideData data={data} clientSide={true}><App/></ServerSideData>` Component that sets the result of the `readServerSideData` method in a context to make it available from all mercury connected children components.
+	* Props
+		* data - `<Object>` Object containing the result of the `readServerSideData` method.
+		* clientSide - `<Boolean>` If false, the connect method will not dispatch automatically the read method of the sources marked as "server-side", so, for example, api requests will not be repeated on client side, and data retrieved in server side will be always passed to connected components.
+
+### Example of server side prefecth implementation in a Next project:
+
+In the next example, the data of the "myDataSource" mercury source will be fetched on server side and request will not be repeated on client side. The component will be rendered directly with server side data, and no loading state will be set:
+
+```jsx
+// src/home.js
+import { addServerSideData, connect } from "@xbyorange/react-mercury";
+import { myDataSource } from "src/data";
+
+addServerSideData(myDataSource); // source is marked to be read when readServerSideData method is executed.
+
+export const HomeComponent = ({data}) => {
+  if(data.loading) {
+    return <div>Loading...</div>
+  }
+  return <div>{data.value}</div>
+};
+
+export const mapDataSourceToProps = () => ({
+  data: myDataSource.read
+});
+
+export const Home = connect(mapDataSourceToProps)(HomeComponent)
+
+```
+
+```jsx
+// pages/index.js
+import { readServerSideData, ServerSideData } from "@xbyorange/react-mercury";
+import { Home } from "src/home";
+
+const Page = ({ serverSideData }) => (
+  <ServerSideData data={serverSideData} clientSide={false} >
+    <Home/>
+  </ServerSideData>
+);
+
+Page.getInitialProps = async () => {
+  return {
+    serverSideData: await readServerSideData()
+  }
+}
+
+export default Page;
+```
+
 ## Demo
 
 To run a real implementation example in a React app, you can clone the project and execute the provided demo:
