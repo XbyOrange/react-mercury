@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 ### BREAKING CHANGES
 
+## [1.2.0] - 2019-10-21
+
 ## [1.1.0] - 2019-08-21
 ### Added
 - Add server side data behavior tests and documentation.
