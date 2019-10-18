@@ -23,7 +23,9 @@
     "react-scripts": "2.1.3"
   },
   "scripts": {
-    "start": "ncp ../dist src/react-mercury && react-app-rewired start --scripts-version react-scripts",
+    "prestart": "ncp ../dist src/react-mercury",
+    "start": "react-app-rewired start --scripts-version react-scripts",
+    "prebuild": "ncp ../dist src/react-mercury",
     "build": "react-app-rewired build --scripts-version react-scripts",
     "test": "react-app-rewired test --scripts-version react-scripts",
     "eject": "react-scripts eject",
