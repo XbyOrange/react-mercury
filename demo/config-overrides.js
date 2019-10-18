@@ -1,6 +1,7 @@
 //const path = require("path");
 
 module.exports = function override(config /*, env*/) {
+  // Remove eslint execution for running app
   let eslintRuleIndex;
   config.module.rules.forEach((rule, ruleIndex) => {
     if (rule.use && Array.isArray(rule.use)) {
@@ -14,6 +15,8 @@ module.exports = function override(config /*, env*/) {
   if (eslintRuleIndex) {
     config.module.rules.splice(eslintRuleIndex, 1);
   }
+
+  // Add babel alias for react-mercury
   config.module.rules.unshift({
     test: /\.(js|jsx|mjs)$/,
     include: /src/,
