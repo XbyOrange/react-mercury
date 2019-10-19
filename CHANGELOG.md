@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### BREAKING CHANGES
 
 ## [1.2.0] - 2019-10-21
+### Fixed
+- Fix demo installation
 
 ## [1.1.0] - 2019-08-21
 ### Added
