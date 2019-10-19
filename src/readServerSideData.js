@@ -40,3 +40,7 @@ export const readServerSide = sources => {
 };
 
 export const readServerSideData = readServerSide;
+
+export const clearServerSide = () => {
+  serverSideData.clear();
+};

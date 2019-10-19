@@ -3,6 +3,7 @@ export {
   readServerSide,
   readServerSideData,
   readOnServerSide,
-  addServerSideData
+  addServerSideData,
+  clearServerSide
 } from "./readServerSideData";
 export { ServerSideData } from "./ServerSideData";
