@@ -2,7 +2,6 @@ import React from "react";
 import hoistNonReactStatics from "hoist-non-react-statics";
 import { isEqual } from "lodash";
 import { ServerSideDataContext } from "./ServerSideDataContext";
-import { getSourceId } from "./helpers";
 
 const READ_METHOD = "read";
 
@@ -82,9 +81,8 @@ export const connect = (mapSourcesToProps, parseProps) => {
             this.sourcePropsGetters[sourceKey] = this.sourceProps[sourceKey].prop;
             this.sourceProps[sourceKey] = this.sourceProps[sourceKey]._method;
           }
-          // TODO, generate id in mercury. Remove id generation from here
           if (this.isMercurySource(this.sourceProps[sourceKey])) {
-            this.sourcePropsIds[sourceKey] = getSourceId(this.sourceProps[sourceKey]._source);
+            this.sourcePropsIds[sourceKey] = this.sourceProps[sourceKey]._source._id;
           }
         });
       }

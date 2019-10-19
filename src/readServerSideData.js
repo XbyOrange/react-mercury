@@ -1,13 +1,10 @@
-import { isArray } from "lodash";
-import { getSourceId } from "./helpers";
-
 const serverSideData = new Set();
 
-const getSourceData = source => {
-  return source.read().then(result => {
+const readSourceValue = source => {
+  return source.read().then(value => {
     return Promise.resolve({
-      id: getSourceId(source),
-      result
+      id: source._id,
+      value
     });
   });
 };
@@ -15,7 +12,7 @@ const getSourceData = source => {
 const resultsToObject = results => {
   return Promise.resolve(
     results.reduce((allResults, result) => {
-      allResults[result.id] = result.result;
+      allResults[result.id] = result.value;
       return allResults;
     }, {})
   );
@@ -23,7 +20,7 @@ const resultsToObject = results => {
 
 export const addServerSideData = sources => {
   if (sources) {
-    const sourcesToAdd = isArray(sources) ? sources : [sources];
+    const sourcesToAdd = Array.isArray(sources) ? sources : [sources];
     sourcesToAdd.forEach(source => {
       serverSideData.add(source);
     });
@@ -32,5 +29,5 @@ export const addServerSideData = sources => {
 
 export const readServerSideData = sources => {
   addServerSideData(sources);
-  return Promise.all(Array.from(serverSideData).map(getSourceData)).then(resultsToObject);
+  return Promise.all(Array.from(serverSideData).map(readSourceValue)).then(resultsToObject);
 };
