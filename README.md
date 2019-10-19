@@ -181,6 +181,8 @@ export const ConnectedModule = connect(
 
 Methods for prefetching data on server side rendering are available too. When data is prefetched in server side, the connect function will pass the `value` property calculated on server side to the components directly. It will not modify the `loading` property until the first load on client side is finished (At first client-side load, the resource will not be considered as `loading` to maintain the server-side value in the component until it finish loading).
 
+> __It is important to define custom an unique "uuids" for your mercury Selectors when are going to be read on server side data. If not, the `readServerSide` method will throw an error if detects duplicated "ids".__
+
 ### Server side data methods and components
 
 * `readOnServerSide(source)`
