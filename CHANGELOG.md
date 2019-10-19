@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 ### BREAKING CHANGES
 
-## [1.2.0] - 2019-10-21
+## [1.2.0] - 2019-10-19
 ### Changed
 - Upgrade dependencies
 - Rename server side data methods. Maintain old ones due to retrocompatibility.
