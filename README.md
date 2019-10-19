@@ -183,17 +183,19 @@ Methods for prefetching data on server side rendering are available too. When da
 
 ### Server side data methods and components
 
-* `addServerSideData(source)`
+* `readOnServerSide(source)`
+	* Alias - `addServerSideData`
 	* Arguments
-		* source - `<Object> or <Array> of <Objects>` Mercury source or sources that should be read when `readServerSideData` method is executed. Can be Mercury origins or selectors of any type, queried or not.
-* `readServerSideData([source])`
+		* source - `<Object> or <Array> of <Objects>` Mercury source or sources that should be read when `readServerSide` method is executed. Can be Mercury origins or selectors of any type, queried or not.
+* `readServerSide([source])`
+	* Alias - `readServerSideData`
 	* Arguments
-		* source - `<Object> or <Array> of <Objects>` Mercury source or sources that should be read when `readServerSideData` method is executed. Can be Mercury origins or selectors of any type, queried or not.
+		* source - `<Object> or <Array> of <Objects>` Mercury source or sources. Will be added to be read with the `readOnServerSide` method.
 	* Returns
-		* `<Object>` This method is asynchronous, and returns an object containing all server side data ready to be set on the `<ServerSideData>` context component.
-* `<ServerSideData data={data} clientSide={true}><App/></ServerSideData>` Component that sets the result of the `readServerSideData` method in a context to make it available from all mercury connected children components.
+		* `<Object>` This method is asynchronous, and, when resolved, it returns an object containing all server side data ready to be set on the `<ServerSideData>` context component.
+* `<ServerSideData data={data} clientSide={true}><App/></ServerSideData>` Component that sets the result of the `readServerSide` method in a context to make it available from all mercury connected children components.
 	* Props
-		* data - `<Object>` Object containing the result of the `readServerSideData` method.
+		* data - `<Object>` Object containing the result of the `readServerSide` method.
 		* clientSide - `<Boolean>` If false, the connect method will not dispatch automatically the read method of the sources marked as "server-side", so, for example, api requests will not be repeated on client side, and data retrieved in server side will be always passed to connected components.
 
 ### Example of server side prefecth implementation in a Next project:
@@ -202,10 +204,10 @@ In the next example, the data of the "myDataSource" mercury source will be fetch
 
 ```jsx
 // src/home.js
-import { addServerSideData, connect } from "@xbyorange/react-mercury";
+import { readOnServerSide, connect } from "@xbyorange/react-mercury";
 import { myDataSource } from "src/data";
 
-addServerSideData(myDataSource); // source is marked to be read when readServerSideData method is executed.
+readOnServerSide(myDataSource); // source is marked to be read when readServerSide method is executed.
 
 export const HomeComponent = ({data}) => {
   if(data.loading) {
@@ -224,7 +226,7 @@ export const Home = connect(mapDataSourceToProps)(HomeComponent)
 
 ```jsx
 // pages/index.js
-import { readServerSideData, ServerSideData } from "@xbyorange/react-mercury";
+import { readServerSide, ServerSideData } from "@xbyorange/react-mercury";
 import { Home } from "src/home";
 
 const Page = ({ serverSideData }) => (
@@ -235,7 +237,7 @@ const Page = ({ serverSideData }) => (
 
 Page.getInitialProps = async () => {
   return {
-    serverSideData: await readServerSideData()
+    serverSideData: await readServerSide()
   }
 }
 
