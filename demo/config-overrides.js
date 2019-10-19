@@ -1,6 +1,4 @@
-//const path = require("path");
-
-module.exports = function override(config /*, env*/) {
+module.exports = function override(config) {
   // Remove eslint execution for running app
   let eslintRuleIndex;
   config.module.rules.forEach((rule, ruleIndex) => {
