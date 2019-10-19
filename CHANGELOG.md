@@ -11,6 +11,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 ### BREAKING CHANGES
 
+## [1.2.0] - 2019-10-19
+### Changed
+- Upgrade dependencies
+- Rename server side data methods. Maintain old ones due to retrocompatibility.
+- Use mercury ids for identification during server-side-data.
+
+### Fixed
+- Fix demo installation
+
 ## [1.1.0] - 2019-08-21
 ### Added
 - Add server side data behavior tests and documentation.

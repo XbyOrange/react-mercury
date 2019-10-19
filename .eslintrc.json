@@ -1,4 +1,8 @@
 {
+  "env": {
+    "node": true,
+    "es6": true
+  },
   "parser": "babel-eslint",
   "plugins": ["prettier"],
   "rules": {
@@ -9,6 +13,7 @@
         "parser": "flow"
       }
     ],
+    "no-undef": "error",
     "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }]
   },
   "extends": ["plugin:react/recommended", "prettier"],
