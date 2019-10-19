@@ -22,15 +22,16 @@ export const booksFilteredAndSorted = new Selector(
   },
   (booksResults, filter) => {
     const { year } = filter;
+    let booksResultsFiltered = booksResults;
 
     // year query property is not sent to server, the books results are filtered by client
     if (year) {
-      booksResults = booksResults.filter(book => {
+      booksResultsFiltered = booksResultsFiltered.filter(book => {
         return book.year.startsWith(year);
       });
     }
 
-    return sortBy(booksResults, (filter && filter.sortBy) || "id");
+    return sortBy(booksResultsFiltered, (filter && filter.sortBy) || "id");
   },
   []
 );
@@ -73,15 +74,16 @@ export const authorsAndBooksFilteredAndSorted = new Selector(
   },
   (query, booksResults, filter) => {
     const { titleContaining } = filter;
+    let booksResultsFiltered = booksResults;
 
     // title query property is not sent to server, the books results are filtered by client
     if (titleContaining) {
-      booksResults = booksResults.filter(book => {
+      booksResultsFiltered = booksResultsFiltered.filter(book => {
         return book.title.toLowerCase().includes(titleContaining.toLowerCase());
       });
     }
 
-    return sortBy(booksResults, (filter && filter.sortBy) || "id");
+    return sortBy(booksResultsFiltered, (filter && filter.sortBy) || "id");
   },
   []
 );
