@@ -6,7 +6,14 @@ import AxiosMock from "./Axios.mock.js";
 import { Selector } from "@xbyorange/mercury";
 import { Api } from "@xbyorange/mercury-api";
 import sinon from "sinon";
-import { connect, readServerSideData, addServerSideData, ServerSideData } from "../src/index";
+import {
+  connect,
+  readServerSideData,
+  addServerSideData,
+  readOnServerSide,
+  ServerSideData,
+  clearServerSide
+} from "../src/index";
 
 import jsdom from "jsdom";
 const { JSDOM } = jsdom;
@@ -101,8 +108,6 @@ describe("react connect plugin", () => {
     books.client = axios._stub;
     booksServerSide.client = axios._stub;
     sandbox.spy(booksServerSide, "read");
-
-    addServerSideData(booksServerSide);
   });
 
   afterAll(() => {
@@ -112,6 +117,7 @@ describe("react connect plugin", () => {
 
   afterEach(() => {
     sandbox.reset();
+    clearServerSide();
   });
 
   beforeEach(() => {
@@ -180,6 +186,8 @@ describe("react connect plugin", () => {
     });
     const ConnectedBooks = connect(mapDataSourceToProps)(BooksList);
 
+    readOnServerSide(booksServerSide);
+
     const serverSideData = await readServerSideData();
 
     const wrapper = mount(
@@ -200,6 +208,52 @@ describe("react connect plugin", () => {
     wrapper.update();
     expect(wrapper.find(".loading").length).toEqual(0);
     expect(wrapper.find("li.book").length).toEqual(2);
+    wrapper.unmount();
+  });
+
+  it("should throw an error when reading server side data if there are duplicated mercury sources ids", async () => {
+    expect.assertions(1);
+    const fooBooksServerSideSelector = new Selector(booksServerSide, result => result, []);
+    const fooBooksServerSideSelector2 = new Selector(booksServerSide, result => result, []);
+    readOnServerSide(fooBooksServerSideSelector);
+    readOnServerSide(fooBooksServerSideSelector2);
+
+    try {
+      await readServerSideData();
+    } catch (err) {
+      expect(err.message).toEqual(expect.stringContaining(fooBooksServerSideSelector2._id));
+    }
+  });
+
+  it("should render serverSide properties of different selectors with defined uuid, even when are using same origin", async () => {
+    expect.assertions(3);
+    const booksServerSideSelector = new Selector(booksServerSide, result => result, {
+      defaultValue: [],
+      uuid: "books"
+    });
+    const authorServerSideSelector = new Selector(booksServerSide, () => "Cervantes", {
+      defaultValue: [],
+      uuid: "author"
+    });
+    addServerSideData([booksServerSideSelector, authorServerSideSelector]);
+    const mapDataSourceToProps = () => ({
+      books: booksServerSideSelector.read,
+      author: authorServerSideSelector.read.getters.value
+    });
+    const ConnectedBooks = connect(mapDataSourceToProps)(BooksList);
+
+    const serverSideData = await readServerSideData();
+
+    const wrapper = mount(
+      <ServerSideData data={serverSideData} clientSide={false}>
+        <ConnectedBooks />
+      </ServerSideData>
+    );
+
+    expect(wrapper.find(".loading").length).toEqual(0);
+    expect(wrapper.find("li.book").length).toEqual(2);
+    expect(wrapper.find("h4").text()).toEqual("Cervantes");
+
     wrapper.unmount();
   });
 
@@ -307,6 +361,7 @@ describe("react connect plugin", () => {
     const mapDataSourceToProps = () => ({
       books: booksServerSide.read
     });
+    readOnServerSide(booksServerSide);
     const ConnectedBooks = connect(mapDataSourceToProps)(BooksList);
 
     const serverSideData = await readServerSideData();

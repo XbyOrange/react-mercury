@@ -1,13 +1,10 @@
-import { isArray } from "lodash";
-import { getSourceId } from "./helpers";
-
 const serverSideData = new Set();
 
-const getSourceData = source => {
-  return source.read().then(result => {
+const readSourceValue = source => {
+  return source.read().then(value => {
     return Promise.resolve({
-      id: getSourceId(source),
-      result
+      id: source._id,
+      value
     });
   });
 };
@@ -15,22 +12,35 @@ const getSourceData = source => {
 const resultsToObject = results => {
   return Promise.resolve(
     results.reduce((allResults, result) => {
-      allResults[result.id] = result.result;
+      if (allResults.hasOwnProperty(result.id)) {
+        throw new Error(
+          `Duplicated mercury id ${result.id} detected in server-side-data. Data will not be assigned properly to correspondent sources in client-side`
+        );
+      }
+      allResults[result.id] = result.value;
       return allResults;
     }, {})
   );
 };
 
-export const addServerSideData = sources => {
+export const readOnServerSide = sources => {
   if (sources) {
-    const sourcesToAdd = isArray(sources) ? sources : [sources];
+    const sourcesToAdd = Array.isArray(sources) ? sources : [sources];
     sourcesToAdd.forEach(source => {
       serverSideData.add(source);
     });
   }
 };
 
-export const readServerSideData = sources => {
-  addServerSideData(sources);
-  return Promise.all(Array.from(serverSideData).map(getSourceData)).then(resultsToObject);
+export const addServerSideData = readOnServerSide;
+
+export const readServerSide = sources => {
+  readOnServerSide(sources);
+  return Promise.all(Array.from(serverSideData).map(readSourceValue)).then(resultsToObject);
+};
+
+export const readServerSideData = readServerSide;
+
+export const clearServerSide = () => {
+  serverSideData.clear();
 };
