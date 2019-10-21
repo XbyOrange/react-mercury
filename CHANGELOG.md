@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 ### BREAKING CHANGES
 
+## [1.2.1] - 2019-10-21
+### Fixed
+- Fix duplicated id throws an error in server-side-rendering.
+
 ## [1.2.0] - 2019-10-19
 ### Changed
 - Upgrade dependencies
