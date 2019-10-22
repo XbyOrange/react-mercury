@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 ### BREAKING CHANGES
 
+## [1.2.1] - 2019-10-22
+### Fixed
+- Do not throw an error on duplicated ids detected while reading server side data.
+
 ## [1.2.0] - 2019-10-19
 ### Changed
 - Upgrade dependencies

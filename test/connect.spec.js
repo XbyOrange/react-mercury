@@ -211,18 +211,22 @@ describe("react connect plugin", () => {
     wrapper.unmount();
   });
 
-  it("should throw an error when reading server side data if there are duplicated mercury sources ids", async () => {
+  it("should trace a warning when reading server side data if there are duplicated mercury sources ids", async () => {
     expect.assertions(1);
-    const fooBooksServerSideSelector = new Selector(booksServerSide, result => result, []);
-    const fooBooksServerSideSelector2 = new Selector(booksServerSide, result => result, []);
+    sandbox.spy(console, "warn");
+    const fooBooksServerSideSelector = new Selector(booksServerSide, result => result, {
+      defaultValue: [],
+      uuid: "foo-id"
+    });
+    const fooBooksServerSideSelector2 = new Selector(booksServerSide, result => result, {
+      defaultValue: [],
+      uuid: "foo-id"
+    });
     readOnServerSide(fooBooksServerSideSelector);
     readOnServerSide(fooBooksServerSideSelector2);
 
-    try {
-      await readServerSideData();
-    } catch (err) {
-      expect(err.message).toEqual(expect.stringContaining(fooBooksServerSideSelector2._id));
-    }
+    await readServerSideData();
+    expect(console.warn.getCall(0).args[0]).toEqual(expect.stringContaining("foo-id"));
   });
 
   it("should render serverSide properties of different selectors with defined uuid, even when are using same origin", async () => {
