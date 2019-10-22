@@ -13,8 +13,8 @@ const resultsToObject = results => {
   return Promise.resolve(
     results.reduce((allResults, result) => {
       if (allResults.hasOwnProperty(result.id)) {
-        throw new Error(
-          `Duplicated mercury id ${result.id} detected in server-side-data. Data will not be assigned properly to correspondent sources in client-side`
+        console.warn(
+          `Duplicated mercury id ${result.id} detected in server-side-data. Data may not be assigned properly to correspondent sources in client-side`
         );
       }
       allResults[result.id] = result.value;
